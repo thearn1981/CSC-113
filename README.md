@@ -3,9 +3,9 @@
 Welcome! This repository serves as my official portfolio for **CSC 113**. It documents my journey, assignments, and experiments with AI tools and SageMath.
 
 ## 👤 Student Info
-- **Name:** [Your Name]
-- **Instructor:** [Instructor Name]
-- **Semester:** [e.g., Spring 2024]
+- **Name:** [Teresa Hearn]
+- **Instructor:** [Mr. Norris]
+- **Semester:** [Spring 2026]
 
 ## 📂 Portfolio Structure
 This portfolio is organized by week to track progress and learning milestones:
