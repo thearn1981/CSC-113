@@ -9,6 +9,7 @@ Welcome! This repository serves as my official portfolio for **CSC 113**. It doc
 
 ## 📂 Portfolio Structure
 This portfolio is organized by week to track progress and learning milestones:
+```text
 csc113-portfolio/
 ├── README.md
 ├── week-02-sage/
