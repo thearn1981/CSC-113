@@ -18,3 +18,20 @@ csc113-portfolio/
 │   ├── kevin-conversation.md (Your Kevin chat from Task 2)
 │   └── prompt-library.md (Your first 5+ prompts)
 └── [other weeks...]
+
+#### Week 2: AI Tools & First Collaborations
+**Date**: [01/19/2026]
+
+**What I learned this week:**
+- [AI is a cool tool and each one seems to be a little more detailed then others.]
+- [Learn to be specific as if you are explaining stuff to a 5 year old.]
+- [Having a back up AI tool for once you hit the limit is important.]
+
+**What challenged me:**
+- [When you are not specific about somethings, the AI may just assume things.]
+
+**What I'm proud of:**
+- [Learning to be more specfic with prompts]
+
+**Questions I still have:**
+- [Is one really better then the other?]
