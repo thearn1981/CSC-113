@@ -1,0 +1,59 @@
+# H.1.2 — Continuing with SAGE (Track A: Code Builders)
+
+**Course:** CSC-113 AI Fundamentals  
+**Assignment:** H.1.2 – Track A (Coder Track)  
+**Due Date:** Feb 9, 11:59 PM  
+**Submission Method:** GitHub Pull Request (PR #3)
+
+---
+
+## 📌 Track Selection
+
+For this assignment, I am completing **Track A: Code Builders**.
+
+Track A focuses on AI-assisted software development, which aligns with my interest in programming and learning how AI tools can support real-world coding workflows. This track emphasizes building, coding, and documenting AI collaboration rather than relying only on prompt-based outputs.
+
+---
+
+## 🎯 Assignment Goals
+
+The goal of H.1.2 is to move beyond AI comparison and begin using AI as an active development partner. This assignment introduces a professional development workflow used by software developers.
+
+By completing this track, I am practicing:
+
+- Setting up a **GitHub Codespace** as a cloud-based development environment
+- Writing **Python scripts** with AI assistance
+- Organizing files in a **SAGE workspace**
+- Using the **Issue → Branch → Code → Pull Request** workflow
+- Documenting how AI contributes to the coding process
+
+---
+
+## 🛠 What This Repository Includes
+
+- A working **GitHub Codespace**
+- Python scripts created with AI support
+- Organized project files following SAGE workspace guidelines
+- Documentation describing how AI was used during development
+- A Pull Request (PR #2) demonstrating completed work
+
+---
+
+## 🤝 AI Collaboration
+
+AI tools were used as a coding partner to:
+- Help generate starter code
+- Explain Python concepts
+- Assist with debugging and refinement
+- Provide guidance on project structure and workflow
+
+All code and decisions were reviewed and adjusted to ensure understanding and correctness.
+
+---
+
+## 🚀 Progress Status
+
+- [] Track selected (Track A)
+
+---
+
