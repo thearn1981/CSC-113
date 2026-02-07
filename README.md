@@ -35,3 +35,21 @@ csc113-portfolio/
 
 **Questions I still have:**
 - [Is one really better then the other?]
+
+#### Week 2: SAGE Development Environment & AI-Assisted Coding
+**Date**: January 30th - February 8th
+
+**What I built:**
+- `hello_sage.py` — first Python script
+- `prompt_tracker.py` — built with Kevin's help
+
+**What I learned about AI-assisted coding:**
+- Explaining with specific details on how AI should handle your prompts is useful.
+- AI will get things close the more detailed you are in your prompts but you
+ still need to read the code before copy pasting.
+
+**What challenged me:** finding the right balance between AI assisted work and my own work.  
+
+**What I'm proud of:** Learning to be very specific in the details on what and how you want the AI to respond to prompts.
+
+**Questions I still have:** 
