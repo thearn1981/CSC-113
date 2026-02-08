@@ -188,3 +188,8 @@ If you want, next I can:
 - Or keep logging future lessons in this same format 🦄📘
 
 🦄✨ Gallop forth!
+
+
+---
+# Reflection
+Having rainbows and unicorn talk does not take long to get annoying so I can see how having the right persona and purpose set can make a world of difference.
