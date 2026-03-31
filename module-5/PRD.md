@@ -51,7 +51,33 @@ Users can log both strength and cardio:
 
 ---
 
-### 2. Weekly Workout Plan Generator (Rule-Based AI)
+### 2. Workout History (View, Edit, Delete)
+Users can review past workouts:
+
+- View a list of previously logged workouts
+- Edit any past workout entry (update sets, reps, weight, duration, etc.)
+- Delete a workout entry
+
+---
+
+### 3. Filtering
+Users can filter workout history by:
+
+- **Muscle group** (e.g., legs, chest, back)
+- **Date** (e.g., last 7 days, specific date range)
+
+---
+
+### 4. Muscle Group Balance Tracking
+The app tracks which muscle groups have been worked over the **last 7 days**:
+
+- Visual summary of muscle group coverage
+- Alerts if a group has been neglected
+- Helps beginners maintain balanced full-body training
+
+---
+
+### 5. Weekly Workout Plan Generator (Rule-Based)
 
 System generates a beginner-safe weekly schedule that includes:
 - Full-body strength workouts (machines only)
@@ -67,7 +93,7 @@ System generates a beginner-safe weekly schedule that includes:
 
 ---
 
-### 3. “What Do I Do Today?” Dashboard
+### 6. “What Do I Do Today?” Dashboard
 
 The app’s main feature:
 
@@ -146,8 +172,8 @@ Today’s Plan
 
 ## 🔄 User Interaction Flow
 
-1. User logs in  
-2. Completes first-time setup:
+1. User opens the app (no login required — data stored locally in browser)  
+2. Completes first-time setup (on first visit):
    - Select workout days (default: 3)
    - Select goal (general fitness, weight loss, endurance)
 
@@ -161,6 +187,15 @@ Today’s Plan
 5. User logs workout (optional but encouraged)
 
 6. System updates future plans based on activity
+
+---
+
+## ⚙️ Constraints (MVP)
+
+- **Platform:** Single-page application (SPA) that runs entirely in the browser
+- **Storage:** All data persisted using `localStorage` — no backend database required for MVP
+- **Dependencies:** No external libraries or frameworks required
+- **Auth:** No user accounts or login — anonymous local profile only
 
 ---
 
@@ -187,7 +222,7 @@ Today’s Plan
 
 ---
 
-## ⚙️ Suggested Data Model (Django-Friendly)
+## ⚙️ Suggested Data Model
 
 ### Exercise
 - id
@@ -206,13 +241,19 @@ Today’s Plan
 - date
 - is_rest_day
 
-### WorkoutEntry
+### StrengthEntry
 - id
 - user_id
 - exercise_id
 - sets
 - reps
 - weight
+- date
+
+### CardioEntry
+- id
+- user_id
+- exercise_id
 - duration
 - intensity
 - date
