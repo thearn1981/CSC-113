@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymFlow – Beginner Workout Planner</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #64748b;
+            --success: #22c55e;
+            --background: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --accent: #f59e0b;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body { 
+            background-color: var(--background); 
+            color: var(--text); 
+            margin: 0; 
+            padding-bottom: 50px;
+        }
+
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
+
+        /* Header & Navigation */
+        header { text-align: center; padding: 20px 0; }
+        .logo { font-size: 24px; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
+        
+        /* Views Management */
+        .view { display: none; }
+        .view.active { display: block; animation: fadeIn 0.3s ease-in; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Cards & UI Elements */
+        .card { 
+            background: var(--card); 
+            border-radius: 12px; 
+            padding: 20px; 
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            margin-bottom: 20px;
+        }
+
+        h2 { margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn:disabled { background: var(--secondary); opacity: 0.5; }
+
+        /* Onboarding Styles */
+        .setup-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 0.9rem; }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        /* Dashboard Styles */
+        .day-badge { 
+            background: #dbeafe; 
+            color: var(--primary); 
+            padding: 4px 12px; 
+            border-radius: 20px; 
+            font-size: 0.8rem; 
+            font-weight: 700;
+        }
+
+        .section-title { font-weight: 700; color: var(--secondary); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; margin: 15px 0 10px 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .exercise-info { flex-grow: 1; }
+        .exercise-name { font-weight: 600; }
+        .exercise-meta { font-size: 0.85rem; color: var(--secondary); }
+
+        .check-circle {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .completed .check-circle { background: var(--success); border-color: var(--success); color: white; }
+        .completed .exercise-name { text-decoration: line-through; color: var(--secondary); }
+
+        /* Progress Bar */
+        .progress-container { height: 8px; background: #e2e8f0; border-radius: 4px; margin: 10px 0 20px 0; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--success); width: 0%; transition: width 0.3s ease; }
+
+        .rest-day { text-align: center; padding: 40px 20px; color: var(--secondary); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">🏋️ GymFlow</div>
+            <div id="current-date-display" style="font-size: 0.85rem; color: var(--secondary); margin-top: 5px;"></div>
+        </header>
+
+        <div id="view-setup" class="view active">
+            <div class="card">
+                <h2>Welcome! Let's build your plan.</h2>
+                <p style="color: var(--secondary); font-size: 0.9rem;">Perfect for beginners focusing on health and consistency.</p>
+                
+                <div class="setup-group">
+                    <label>Main Goal</label>
+                    <select id="user-goal">
+                        <option value="general">General Fitness</option>
+                        <option value="weight">Weight Loss</option>
+                        <option value="heart">Heart Health</option>
+                    </select>
+                </div>
+
+                <div class="setup-group">
+                    <label>Workouts Per Week</label>
+                    <select id="user-frequency">
+                        <option value="3">3 Days (Recommended)</option>
+                        <option value="2">2 Days</option>
+                        <option value="4">4 Days</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="generatePlan()">Generate My Daily Guide</button>
+            </div>
+        </div>
+
+        <div id="view-dashboard" class="view">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2>Today's Plan</h2>
+                    <span id="day-label" class="day-badge">Day 1</span>
+                </div>
+                
+                <div class="progress-container">
+                    <div id="workout-progress" class="progress-bar"></div>
+                </div>
+
+                <div id="workout-content">
+                    </div>
+
+                <button id="finish-btn" class="btn" style="margin-top: 20px;" onclick="completeWorkout()">Finish Workout</button>
+            </div>
+
+            <button class="btn" style="background: none; color: var(--secondary); font-size: 0.8rem;" onclick="resetApp()">Reset All Data</button>
+        </div>
+
+        <div id="view-rest" class="view">
+            <div class="card rest-day">
+                <div style="font-size: 3rem; margin-bottom: 10px;">🔋</div>
+                <h2>Rest & Recover</h2>
+                <p>No formal gym session today. Focus on staying hydrated and maybe take a 15-minute walk.</p>
+                <button class="btn" style="margin-top: 20px; background: var(--secondary);" onclick="forceWorkout()">I want to workout anyway</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * APP STATE & DATA
+         */
+        let userState = JSON.parse(localStorage.getItem('gymflow_user')) || null;
+
+        const EXERCISES = {
+            warmup: ['Treadmill (Walking)', 'Elliptical (Low)', 'Stationary Bike'],
+            strength: [
+                { name: 'Leg Press', sets: 2, reps: 12 },
+                { name: 'Chest Press Machine', sets: 2, reps: 10 },
+                { name: 'Lat Pulldown', sets: 2, reps: 10 },
+                { name: 'Shoulder Press Machine', sets: 2, reps: 10 },
+                { name: 'Seated Row', sets: 2, reps: 10 },
+                { name: 'Leg Extension', sets: 2, reps: 12 }
+            ],
+            cardio: ['Treadmill', 'Stationary Bike', 'Elliptical'],
+            stretches: ['Hamstring Stretch', 'Quad Stretch', 'Chest Opener', 'Shoulder Stretch']
+        };
+
+        /**
+         * CORE LOGIC
+         */
+
+        function init() {
+            const today = new Date();
+            document.getElementById('current-date-display').innerText = today.toDateString();
+
+            if (userState) {
+                showDashboard();
+            } else {
+                switchView('view-setup');
+            }
+        }
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        function generatePlan() {
+            const frequency = parseInt(document.getElementById('user-frequency').value);
+            const goal = document.getElementById('user-goal').value;
+
+            // Generate a simple 7-day boolean map (True = Workout, False = Rest)
+            // Defaulting to 1-off-1-off-1-off-off for 3 days
+            const schedule = [true, false, true, false, true, false, false];
+            
+            userState = {
+                goal: goal,
+                frequency: frequency,
+                schedule: schedule,
+                currentDayIndex: new Date().getDay(), // 0-6 (Sun-Sat)
+                completedToday: false,
+                history: []
+            };
+
+            save();
+            showDashboard();
+        }
+
+        function showDashboard() {
+            const dayIdx = new Date().getDay();
+            const isWorkoutDay = userState.schedule[dayIdx];
+
+            if (isWorkoutDay && !userState.completedToday) {
+                renderWorkout();
+                switchView('view-dashboard');
+            } else {
+                switchView('view-rest');
+            }
+        }
+
+        function renderWorkout() {
+            const container = document.getElementById('workout-content');
+            document.getElementById('day-label').innerText = `Full Body + Cardio`;
+            
+            let html = `
+                <div class="section-title">Step 1: Warm-Up</div>
+                ${renderItem('warmup', `${EXERCISES.warmup[0]} - 5 mins`)}
+                
+                <div class="section-title">Step 2: Strength (Machines)</div>
+            `;
+
+            EXERCISES.strength.forEach((ex, i) => {
+                html += renderItem(`strength-${i}`, `${ex.name}`, `${ex.sets} sets x ${ex.reps} reps`);
+            });
+
+            html += `
+                <div class="section-title">Step 3: Cardio Finish</div>
+                ${renderItem('cardio-fin', `${EXERCISES.cardio[1]} - 15 mins (Moderate)`)}
+                
+                <div class="section-title">Step 4: Cool Down</div>
+                ${renderItem('stretch', 'Standard Stretching Routine - 5 mins')}
+            `;
+
+            container.innerHTML = html;
+            updateProgress();
+        }
+
+        function renderItem(id, name, meta = 'Complete') {
+            return `
+                <div class="exercise-item" id="item-${id}" onclick="toggleItem('${id}')">
+                    <div class="exercise-info">
+                        <div class="exercise-name">${name}</div>
+                        <div class="exercise-meta">${meta}</div>
+                    </div>
+                    <div class="check-circle">✓</div>
+                </div>
+            `;
+        }
+
+        function toggleItem(id) {
+            const el = document.getElementById(`item-${id}`);
+            el.classList.toggle('completed');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = document.querySelectorAll('.exercise-item').length;
+            const done = document.querySelectorAll('.completed').length;
+            const percent = (done / total) * 100;
+            document.getElementById('workout-progress').style.width = `${percent}%`;
+            
+            document.getElementById('finish-btn').disabled = (done < total);
+        }
+
+        function completeWorkout() {
+            alert("Great job! Consistency is key. See you tomorrow!");
+            userState.completedToday = true;
+            save();
+            showDashboard();
+        }
+
+        function forceWorkout() {
+            userState.completedToday = false;
+            renderWorkout();
+            switchView('view-dashboard');
+        }
+
+        function resetApp() {
+            if(confirm("Start over? This will clear your settings.")) {
+                localStorage.removeItem('gymflow_user');
+                location.reload();
+            }
+        }
+
+        function save() {
+            localStorage.setItem('gymflow_user', JSON.stringify(userState));
+        }
+
+        // Initialize App
+        init();
+    </script>
+</body>
+</html>
