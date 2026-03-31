@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gym Workout Planner MVP</title>
+  <style>
+    /* =========================================================
+       GYM WORKOUT PLANNER - EMBEDDED CSS
+       Beginner-friendly single page app
+       No external libraries required
+       ========================================================= */
+
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --success: #16a34a;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --border: #dbe3ee;
+      --shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #eef4ff 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    h1, h2, h3, h4, p {
+      margin-top: 0;
+    }
+
+    button, select, input {
+      font: inherit;
+    }
+
+    .app-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1d4ed8, #2563eb 60%, #3b82f6);
+      color: white;
+      padding: 28px;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      color: rgba(255, 255, 255, 0.92);
+      max-width: 800px;
+      line-height: 1.5;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .small {
+      font-size: 0.92rem;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: white;
+    }
+
+    .checkbox-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 16px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.12s ease, background 0.12s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: #e5edff;
+      color: #1e40af;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-warning {
+      background: #fff4d6;
+      color: #92400e;
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .main-stack {
+      display: grid;
+      gap: 20px;
+    }
+
+    .today-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .today-plan {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .plan-step {
+      background: #f8fbff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .plan-step h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .plan-step ol,
+    .plan-step ul {
+      padding-left: 18px;
+      margin: 0;
+    }
+
+    .day-chip {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-weight: bold;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .goal-pill {
+      display: inline-block;
+      background: #ecfeff;
+      color: #0f766e;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
+    }
+
+    .week-day {
+      border: 1px solid var(--border);
+      background: #fbfdff;
+      border-radius: 14px;
+      padding: 12px;
+      min-height: 180px;
+    }
+
+    .week-day.today {
+      border: 2px solid var(--primary);
+      background: #eff6ff;
+    }
+
+    .week-day h4 {
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+
+    .week-day .type {
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .week-day.workout .type {
+      color: #166534;
+    }
+
+    .week-day.light .type {
+      color: #92400e;
+    }
+
+    .week-day.rest .type {
+      color: #6b7280;
+    }
+
+    .mini-list {
+      padding-left: 16px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .log-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .log-item {
+      border: 1px solid var(--border);
+      background: #fbfdff;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .log-item strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .empty-state {
+      padding: 18px;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      background: #fafcff;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--muted);
+      padding: 18px 0 8px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 1050px) {
+      .today-plan,
+      .week-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .grid,
+      .split,
+      .today-plan,
+      .week-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- =========================================================
+         HERO / APP INTRO
+         ========================================================= -->
+    <section class="hero">
+      <h1>🏋️ Gym Workout Planner</h1>
+      <p>
+        A beginner-friendly workout planner that removes the guesswork.
+        Get a simple weekly schedule, see exactly what to do today, and log your strength and cardio sessions.
+      </p>
+      <div class="hero-badges">
+        <span class="badge">Machines Only Strength</span>
+        <span class="badge">Built-In Cardio</span>
+        <span class="badge">3–5 Day Flexible Plan</span>
+        <span class="badge">No External Libraries</span>
+      </div>
+    </section>
+
+    <div class="grid">
+      <!-- =========================================================
+           LEFT SIDEBAR: USER SETUP / CONTROLS
+           ========================================================= -->
+      <aside class="card">
+        <div class="section-title">
+          <h2>Setup</h2>
+          <span class="muted small">First-time plan</span>
+        </div>
+
+        <form id="setupForm">
+          <div class="form-group">
+            <label for="userName">Your Name</label>
+            <input id="userName" type="text" placeholder="Enter your name" />
+          </div>
+
+          <div class="form-group">
+            <label for="goal">Primary Goal</label>
+            <select id="goal">
+              <option value="general fitness">General Fitness</option>
+              <option value="weight loss">Weight Loss</option>
+              <option value="endurance">Endurance</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Workout Days</label>
+            <div class="checkbox-list">
+              <label class="check-item"><input type="checkbox" value="1" checked /> Monday</label>
+              <label class="check-item"><input type="checkbox" value="2" /> Tuesday</label>
+              <label class="check-item"><input type="checkbox" value="3" checked /> Wednesday</label>
+              <label class="check-item"><input type="checkbox" value="4" /> Thursday</label>
+              <label class="check-item"><input type="checkbox" value="5" checked /> Friday</label>
+              <label class="check-item"><input type="checkbox" value="6" /> Saturday</label>
+              <label class="check-item"><input type="checkbox" value="0" /> Sunday</label>
+            </div>
+            <p class="muted small">Pick 3–5 workout days for your weekly plan.</p>
+          </div>
+
+          <div class="btn-row">
+            <button type="submit" class="btn btn-primary">Generate Weekly Plan</button>
+            <button type="button" id="resetAppBtn" class="btn btn-danger">Reset App</button>
+          </div>
+        </form>
+
+        <hr style="margin: 18px 0; border: none; border-top: 1px solid var(--border);" />
+
+        <div class="section-title">
+          <h2>Log Workout</h2>
+          <span class="muted small">Optional but helpful</span>
+        </div>
+
+        <form id="logForm">
+          <div class="form-group">
+            <label for="logType">Entry Type</label>
+            <select id="logType">
+              <option value="strength">Strength</option>
+              <option value="cardio">Cardio</option>
+            </select>
+          </div>
+
+          <div id="strengthFields">
+            <div class="form-group">
+              <label for="machine">Machine</label>
+              <select id="machine"></select>
+            </div>
+            <div class="split">
+              <div class="form-group">
+                <label for="sets">Sets</label>
+                <input id="sets" type="number" min="1" value="2" />
+              </div>
+              <div class="form-group">
+                <label for="reps">Reps</label>
+                <input id="reps" type="number" min="1" value="10" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="weight">Weight (optional)</label>
+              <input id="weight" type="number" min="0" placeholder="Example: 40" />
+            </div>
+          </div>
+
+          <div id="cardioFields" class="hidden">
+            <div class="form-group">
+              <label for="cardioType">Cardio Type</label>
+              <select id="cardioType">
+                <option value="Treadmill">Treadmill</option>
+                <option value="Bike">Bike</option>
+                <option value="Elliptical">Elliptical</option>
+                <option value="Walk">Walk</option>
+              </select>
+            </div>
+            <div class="split">
+              <div class="form-group">
+                <label for="duration">Duration (minutes)</label>
+                <input id="duration" type="number" min="1" value="15" />
+              </div>
+              <div class="form-group">
+                <label for="intensity">Intensity</label>
+                <select id="intensity">
+                  <option value="Low">Low</option>
+                  <option value="Moderate" selected>Moderate</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="logDate">Date</label>
+            <input id="logDate" type="date" />
+          </div>
+
+          <button type="submit" class="btn btn-success">Save Workout Entry</button>
+        </form>
+      </aside>
+
+      <!-- =========================================================
+           MAIN CONTENT: TODAY'S PLAN, WEEKLY PLAN, LOG HISTORY
+           ========================================================= -->
+      <main class="main-stack">
+        <!-- TODAY DASHBOARD -->
+        <section class="card">
+          <div class="today-header">
+            <div>
+              <h2>What Do I Do Today?</h2>
+              <p class="muted" id="welcomeText">
+                Create your weekly plan to see today’s step-by-step workout.
+              </p>
+            </div>
+            <div id="goalDisplay" class="goal-pill hidden"></div>
+          </div>
+
+          <div id="todayContainer">
+            <div class="empty-state">
+              No plan yet. Use the setup panel to generate your beginner workout week.
+            </div>
+          </div>
+        </section>
+
+        <!-- WEEKLY PLAN -->
+        <section class="card">
+          <div class="section-title">
+            <h2>Weekly Plan</h2>
+            <span class="muted small">Rule-based beginner schedule</span>
+          </div>
+          <div id="weeklyPlanContainer">
+            <div class="empty-state">
+              Your 7-day plan will appear here after setup.
+            </div>
+          </div>
+        </section>
+
+        <!-- WORKOUT HISTORY -->
+        <section class="card">
+          <div class="section-title">
+            <h2>Workout History</h2>
+            <span class="muted small">Saved in your browser</span>
+          </div>
+          <div id="logHistory" class="log-list">
+            <div class="empty-state">
+              No workout entries yet.
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="footer-note">
+      Built as a lightweight MVP. Everything is saved locally in your browser.
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       GYM WORKOUT PLANNER - EMBEDDED JAVASCRIPT
+       Core behavior:
+       - First-time setup
+       - Weekly workout plan generation
+       - "What Do I Do Today?" dashboard
+       - Workout logging
+       - localStorage persistence
+       ========================================================= */
+
+    // -----------------------------
+    // App constants and starter data
+    // -----------------------------
+    const STORAGE_KEYS = {
+      settings: "gymPlannerSettings",
+      plan: "gymPlannerWeeklyPlan",
+      logs: "gymPlannerWorkoutLogs"
+    };
+
+    const machineExercises = [
+      { name: "Leg Press", muscle: "Lower Body" },
+      { name: "Chest Press", muscle: "Chest" },
+      { name: "Lat Pulldown", muscle: "Back" },
+      { name: "Shoulder Press", muscle: "Shoulders" },
+      { name: "Seated Row", muscle: "Back" },
+      { name: "Leg Curl", muscle: "Hamstrings" },
+      { name: "Leg Extension", muscle: "Quads" },
+      { name: "Ab Crunch Machine", muscle: "Core" }
+    ];
+
+    const cardioChoices = ["Treadmill", "Bike", "Elliptical"];
+    const stretches = [
+      "Hamstrings - 30 sec",
+      "Quads - 30 sec",
+      "Chest - 30 sec",
+      "Shoulders - 30 sec"
+    ];
+
+    // -----------------------------
+    // Element references
+    // -----------------------------
+    const setupForm = document.getElementById("setupForm");
+    const userNameInput = document.getElementById("userName");
+    const goalSelect = document.getElementById("goal");
+    const resetAppBtn = document.getElementById("resetAppBtn");
+
+    const logForm = document.getElementById("logForm");
+    const logTypeSelect = document.getElementById("logType");
+    const strengthFields = document.getElementById("strengthFields");
+    const cardioFields = document.getElementById("cardioFields");
+
+    const machineSelect = document.getElementById("machine");
+    const setsInput = document.getElementById("sets");
+    const repsInput = document.getElementById("reps");
+    const weightInput = document.getElementById("weight");
+    const cardioTypeSelect = document.getElementById("cardioType");
+    const durationInput = document.getElementById("duration");
+    const intensitySelect = document.getElementById("intensity");
+    const logDateInput = document.getElementById("logDate");
+
+    const welcomeText = document.getElementById("welcomeText");
+    const goalDisplay = document.getElementById("goalDisplay");
+    const todayContainer = document.getElementById("todayContainer");
+    const weeklyPlanContainer = document.getElementById("weeklyPlanContainer");
+    const logHistory = document.getElementById("logHistory");
+
+    // -----------------------------
+    // Utility helpers
+    // -----------------------------
+    function saveToStorage(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function loadFromStorage(key, fallback) {
+      const raw = localStorage.getItem(key);
+      if (!raw) return fallback;
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return fallback;
+      }
+    }
+
+    function getTodayDateString() {
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function getStartOfCurrentWeek() {
+      const now = new Date();
+      const todayDay = now.getDay(); // 0=Sun, 1=Mon...
+      const mondayOffset = todayDay === 0 ? -6 : 1 - todayDay;
+      const monday = new Date(now);
+      monday.setHours(0, 0, 0, 0);
+      monday.setDate(now.getDate() + mondayOffset);
+      return monday;
+    }
+
+    function formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function formatFriendlyDate(dateString) {
+      const d = new Date(dateString + "T00:00:00");
+      return d.toLocaleDateString(undefined, {
+        weekday: "long",
+        month: "short",
+        day: "numeric"
+      });
+    }
+
+    function getDayLabel(dayIndex) {
+      const labels = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      return labels[dayIndex];
+    }
+
+    function titleCase(text) {
+      return text
+        .split(" ")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    }
+
+    // -----------------------------
+    // Populate machine dropdown
+    // -----------------------------
+    function populateMachineOptions() {
+      machineSelect.innerHTML = machineExercises
+        .map(ex => `<option value="${ex.name}">${ex.name}</option>`)
+        .join("");
+    }
+
+    // -----------------------------
+    // Toggle log form fields
+    // -----------------------------
+    function toggleLogFields() {
+      const type = logTypeSelect.value;
+      if (type === "strength") {
+        strengthFields.classList.remove("hidden");
+        cardioFields.classList.add("hidden");
+      } else {
+        strengthFields.classList.add("hidden");
+        cardioFields.classList.remove("hidden");
+      }
+    }
+
+    // -----------------------------
+    // Workout plan generator
+    // Rule-based weekly schedule
+    // -----------------------------
+    function generateWorkoutDay(dateString, workoutNumber, goal) {
+      // Slightly rotate exercise order for variety while staying simple and repeatable
+      const exerciseSets = [
+        ["Leg Press", "Chest Press", "Lat Pulldown", "Shoulder Press"],
+        ["Leg Extension", "Seated Row", "Chest Press", "Leg Curl"],
+        ["Leg Press", "Lat Pulldown", "Shoulder Press", "Ab Crunch Machine"]
+      ];
+
+      const chosenExercises = exerciseSets[(workoutNumber - 1) % exerciseSets.length];
+
+      // Cardio finish adjusts a little based on goal
+      let cardioFinishMinutes = 15;
+      let finishIntensity = "Moderate";
+
+      if (goal === "weight loss") {
+        cardioFinishMinutes = 20;
+        finishIntensity = "Moderate";
+      } else if (goal === "endurance") {
+        cardioFinishMinutes = 20;
+        finishIntensity = "Moderate";
+      } else {
+        cardioFinishMinutes = 15;
+        finishIntensity = "Light to Moderate";
+      }
+
+      return {
+        date: dateString,
+        type: "workout",
+        label: "Full Body + Cardio",
+        warmup: {
+          type: cardioChoices[(workoutNumber - 1) % cardioChoices.length],
+          duration: 5 + (workoutNumber % 2) * 5,
+          intensity: "Low"
+        },
+        strength: chosenExercises.map((name, index) => ({
+          name,
+          sets: 2,
+          reps: index === 0 ? 12 : 10
+        })),
+        cardioFinish: {
+          type: cardioChoices[workoutNumber % cardioChoices.length],
+          duration: cardioFinishMinutes,
+          intensity: finishIntensity
+        },
+        stretching: stretches
+      };
+    }
+
+    function generateLightCardioDay(dateString) {
+      return {
+        date: dateString,
+        type: "light",
+        label: "Rest or Light Cardio",
+        recommendation: "10-20 min walk or easy cardio"
+      };
+    }
+
+    function generateRestDay(dateString) {
+      return {
+        date: dateString,
+        type: "rest",
+        label: "Rest Day",
+        recommendation: "Rest, recover, and stay hydrated"
+      };
+    }
+
+    function generateWeeklyPlan(settings) {
+      const startOfWeek = getStartOfCurrentWeek();
+      const selectedWorkoutDays = [...settings.workoutDays].sort((a, b) => a - b);
+      const dailyPlan = [];
+      let workoutCounter = 0;
+
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(startOfWeek);
+        date.setDate(startOfWeek.getDate() + i);
+
+        const dateString = formatDate(date);
+        const jsDay = date.getDay();
+
+        if (selectedWorkoutDays.includes(jsDay)) {
+          workoutCounter++;
+          dailyPlan.push(generateWorkoutDay(dateString, workoutCounter, settings.goal));
+        } else {
+          // For non-workout days: allow up to 1 light cardio day per 2 workout days selected
+          const maxLightDays = Math.floor(selectedWorkoutDays.length / 2);
+          const currentLightDays = dailyPlan.filter(day => day.type === "light").length;
+          const isBetweenWorkouts = [2, 4, 6, 0].includes(jsDay);
+          if (isBetweenWorkouts && currentLightDays < maxLightDays) {
+            dailyPlan.push(generateLightCardioDay(dateString));
+          } else {
+            dailyPlan.push(generateRestDay(dateString));
+          }
+        }
+      }
+
+      return {
+        weekStartDate: formatDate(startOfWeek),
+        goal: settings.goal,
+        userName: settings.userName,
+        days: dailyPlan
+      };
+    }
+
+    // -----------------------------
+    // Rendering functions
+    // -----------------------------
+    function renderTodayPlan(plan) {
+      if (!plan || !plan.days || !plan.days.length) {
+        todayContainer.innerHTML = `
+          <div class="empty-state">
+            No plan yet. Use the setup panel to generate your beginner workout week.
+          </div>
+        `;
+        return;
+      }
+
+      const today = getTodayDateString();
+      const todayPlan = plan.days.find(day => day.date === today);
+
+      if (!todayPlan) {
+        todayContainer.innerHTML = `
+          <div class="empty-state">
+            Today's plan could not be found in your current week.
+          </div>
+        `;
+        return;
+      }
+
+      const name = plan.userName ? `${plan.userName}, ` : "";
+      welcomeText.textContent = `${name}here is your step-by-step plan for ${formatFriendlyDate(todayPlan.date)}.`;
+      goalDisplay.textContent = `Goal: ${titleCase(plan.goal)}`;
+      goalDisplay.classList.remove("hidden");
+
+      if (todayPlan.type === "workout") {
+        todayContainer.innerHTML = `
+          <div class="day-chip">${formatFriendlyDate(todayPlan.date)}</div>
+          <div class="today-plan">
+            <div class="plan-step">
+              <h3>1. Warm-Up</h3>
+              <ul>
+                <li>${todayPlan.warmup.type} - ${todayPlan.warmup.duration} min (${todayPlan.warmup.intensity})</li>
+              </ul>
+            </div>
+
+            <div class="plan-step">
+              <h3>2. Strength</h3>
+              <ol>
+                ${todayPlan.strength.map(ex => `<li>${ex.name} - ${ex.sets} x ${ex.reps}</li>`).join("")}
+              </ol>
+            </div>
+
+            <div class="plan-step">
+              <h3>3. Cardio Finish</h3>
+              <ul>
+                <li>${todayPlan.cardioFinish.type} - ${todayPlan.cardioFinish.duration} min (${todayPlan.cardioFinish.intensity})</li>
+              </ul>
+            </div>
+
+            <div class="plan-step">
+              <h3>4. Stretching</h3>
+              <ul>
+                ${todayPlan.stretching.map(item => `<li>${item}</li>`).join("")}
+              </ul>
+            </div>
+          </div>
+        `;
+      } else if (todayPlan.type === "light") {
+        todayContainer.innerHTML = `
+          <div class="day-chip">${formatFriendlyDate(todayPlan.date)}</div>
+          <div class="plan-step">
+            <h3>Today is a Light Cardio / Recovery Day</h3>
+            <p><strong>Recommendation:</strong> ${todayPlan.recommendation}</p>
+            <ul>
+              <li>Optional warm-up: 5 minutes easy walking</li>
+              <li>Easy pace only</li>
+              <li>Finish with light stretching</li>
+            </ul>
+          </div>
+        `;
+      } else {
+        todayContainer.innerHTML = `
+          <div class="day-chip">${formatFriendlyDate(todayPlan.date)}</div>
+          <div class="plan-step">
+            <h3>Today is a Rest Day</h3>
+            <p><strong>Recommendation:</strong> ${todayPlan.recommendation}</p>
+            <ul>
+              <li>No structured workout needed today</li>
+              <li>Focus on recovery</li>
+              <li>Short walk and gentle stretching are okay</li>
+            </ul>
+          </div>
+        `;
+      }
+    }
+
+    function renderWeeklyPlan(plan) {
+      if (!plan || !plan.days || !plan.days.length) {
+        weeklyPlanContainer.innerHTML = `
+          <div class="empty-state">
+            Your 7-day plan will appear here after setup.
+          </div>
+        `;
+        return;
+      }
+
+      const today = getTodayDateString();
+
+      weeklyPlanContainer.innerHTML = `
+        <div class="week-grid">
+          ${plan.days.map(day => {
+            const isToday = day.date === today ? "today" : "";
+            const typeClass = day.type;
+            const summaryList = day.type === "workout"
+              ? `
+                <ul class="mini-list">
+                  <li>${day.warmup.type} warm-up</li>
+                  <li>${day.strength.length} machine exercises</li>
+                  <li>${day.cardioFinish.duration} min cardio finish</li>
+                  <li>Stretching</li>
+                </ul>
+              `
+              : `
+                <ul class="mini-list">
+                  <li>${day.recommendation}</li>
+                </ul>
+              `;
+
+            return `
+              <div class="week-day ${typeClass} ${isToday}">
+                <h4>${formatFriendlyDate(day.date)}</h4>
+                <div class="type">${day.label}</div>
+                ${summaryList}
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function renderLogs() {
+      const logs = loadFromStorage(STORAGE_KEYS.logs, []);
+      if (!logs.length) {
+        logHistory.innerHTML = `
+          <div class="empty-state">
+            No workout entries yet.
+          </div>
+        `;
+        return;
+      }
+
+      const sortedLogs = [...logs].sort((a, b) => b.date.localeCompare(a.date));
+
+      logHistory.innerHTML = sortedLogs.map(log => {
+        if (log.type === "strength") {
+          return `
+            <div class="log-item">
+              <strong>${log.date} - Strength</strong>
+              <div>${log.machine}</div>
+              <div class="muted small">
+                Sets: ${log.sets} | Reps: ${log.reps} | Weight: ${log.weight ? log.weight + " lbs" : "Not entered"}
+              </div>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="log-item">
+            <strong>${log.date} - Cardio</strong>
+            <div>${log.cardioType}</div>
+            <div class="muted small">
+              Duration: ${log.duration} min | Intensity: ${log.intensity}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // -----------------------------
+    // App actions
+    // -----------------------------
+    function collectSelectedWorkoutDays() {
+      const checked = Array.from(setupForm.querySelectorAll('input[type="checkbox"]:checked'));
+      return checked.map(box => Number(box.value));
+    }
+
+    function saveSettingsAndGeneratePlan(event) {
+      event.preventDefault();
+
+      const userName = userNameInput.value.trim();
+      const goal = goalSelect.value;
+      const workoutDays = collectSelectedWorkoutDays();
+
+      if (workoutDays.length < 3 || workoutDays.length > 5) {
+        alert("Please select between 3 and 5 workout days.");
+        return;
+      }
+
+      const settings = { userName, goal, workoutDays };
+      const plan = generateWeeklyPlan(settings);
+
+      saveToStorage(STORAGE_KEYS.settings, settings);
+      saveToStorage(STORAGE_KEYS.plan, plan);
+
+      renderTodayPlan(plan);
+      renderWeeklyPlan(plan);
+    }
+
+    function saveWorkoutLog(event) {
+      event.preventDefault();
+
+      const type = logTypeSelect.value;
+      const date = logDateInput.value || getTodayDateString();
+      const logs = loadFromStorage(STORAGE_KEYS.logs, []);
+      let entry;
+
+      if (type === "strength") {
+        entry = {
+          type: "strength",
+          date,
+          machine: machineSelect.value,
+          sets: Number(setsInput.value) || 0,
+          reps: Number(repsInput.value) || 0,
+          weight: weightInput.value ? Number(weightInput.value) : null
+        };
+      } else {
+        entry = {
+          type: "cardio",
+          date,
+          cardioType: cardioTypeSelect.value,
+          duration: Number(durationInput.value) || 0,
+          intensity: intensitySelect.value
+        };
+      }
+
+      logs.push(entry);
+      saveToStorage(STORAGE_KEYS.logs, logs);
+      renderLogs();
+      logForm.reset();
+      logDateInput.value = getTodayDateString();
+      logTypeSelect.value = "strength";
+      setsInput.value = 2;
+      repsInput.value = 10;
+      durationInput.value = 15;
+      intensitySelect.value = "Moderate";
+      toggleLogFields();
+    }
+
+    function resetApp() {
+      const confirmed = confirm("This will delete your saved settings, plan, and workout history. Continue?");
+      if (!confirmed) return;
+
+      localStorage.removeItem(STORAGE_KEYS.settings);
+      localStorage.removeItem(STORAGE_KEYS.plan);
+      localStorage.removeItem(STORAGE_KEYS.logs);
+
+      setupForm.reset();
+      logForm.reset();
+
+      // Restore sensible defaults
+      const checkboxes = setupForm.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(box => {
+        box.checked = ["1", "3", "5"].includes(box.value);
+      });
+
+      goalSelect.value = "general fitness";
+      logTypeSelect.value = "strength";
+      setsInput.value = 2;
+      repsInput.value = 10;
+      durationInput.value = 15;
+      intensitySelect.value = "Moderate";
+      logDateInput.value = getTodayDateString();
+
+      welcomeText.textContent = "Create your weekly plan to see today’s step-by-step workout.";
+      goalDisplay.classList.add("hidden");
+
+      renderTodayPlan(null);
+      renderWeeklyPlan(null);
+      renderLogs();
+      toggleLogFields();
+    }
+
+    function restoreSavedState() {
+      const settings = loadFromStorage(STORAGE_KEYS.settings, null);
+      const plan = loadFromStorage(STORAGE_KEYS.plan, null);
+
+      if (settings) {
+        userNameInput.value = settings.userName || "";
+        goalSelect.value = settings.goal || "general fitness";
+
+        const boxes = setupForm.querySelectorAll('input[type="checkbox"]');
+        boxes.forEach(box => {
+          box.checked = settings.workoutDays.includes(Number(box.value));
+        });
+      }
+
+      if (plan) {
+        renderTodayPlan(plan);
+        renderWeeklyPlan(plan);
+      }
+
+      renderLogs();
+    }
+
+    // -----------------------------
+    // Event listeners
+    // -----------------------------
+    setupForm.addEventListener("submit", saveSettingsAndGeneratePlan);
+    logForm.addEventListener("submit", saveWorkoutLog);
+    logTypeSelect.addEventListener("change", toggleLogFields);
+    resetAppBtn.addEventListener("click", resetApp);
+
+    // -----------------------------
+    // Initial startup
+    // -----------------------------
+    populateMachineOptions();
+    logDateInput.value = getTodayDateString();
+    toggleLogFields();
+    restoreSavedState();
+  </script>
+</body>
+</html>
