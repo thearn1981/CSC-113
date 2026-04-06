@@ -23,7 +23,7 @@ A beginner-friendly, single-page gym workout planner that removes the guesswork 
 - **Graceful error handling** — inline field validation, toast notifications, corrupt data recovery, and future-date blocking
 
 ## Try It Yourself
-[Link to GitHub Pages deployment]
+https://thearn1981.github.io/CSC-113/H.5.1/
 
 ## What I Learned
 There are several different AI's to use from knowing which one is better for what is just as important as the prompts that you feed to it. Using the same prompt on the 3 different AI platforms I used generated 3 different gym workout planners while each had some cool things that would be cool to see implemented into one. Some are just more detailed while neither really nailed what I was looking for. AI is very useful but it can take several iterations to get close to what you were invisioning and still may not be perfect. 
